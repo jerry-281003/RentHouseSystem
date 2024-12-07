@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vietnam Address Selector</title>
+</head>
+<body>
+    <h1>Select Address in Vietnam</h1>
+    <form>
+        <!-- Province Dropdown -->
+        <label for="province">Province:</label>
+        <select id="province" name="province" required>
+            <option value="">Select a province</option>
+        </select>
+
+        <!-- District Dropdown -->
+        <label for="district">District:</label>
+        <select id="district" name="district" required>
+            <option value="">Select a district</option>
+        </select>
+
+        <!-- Ward Dropdown -->
+        <label for="ward">Ward:</label>
+        <select id="ward" name="ward" required>
+            <option value="">Select a ward</option>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const provinceAPI = 'https://provinces.open-api.vn/api/p/';
+        const districtAPI = 'https://provinces.open-api.vn/api/d/';
+        const wardAPI = 'https://provinces.open-api.vn/api/w/';
+
+        const provinceSelect = document.getElementById('province');
+        const districtSelect = document.getElementById('district');
+        const wardSelect = document.getElementById('ward');
+
+        // Helper function to clear and populate dropdowns
+        const clearAndPopulate = (dropdown, items, valueField, textField, defaultText) => {
+            dropdown.innerHTML = `<option value="">${defaultText}</option>`;
+            items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item[valueField];
+                option.textContent = item[textField];
+                dropdown.appendChild(option);
+            });
+        };
+
+        // Fetch and populate provinces
+        fetch(provinceAPI)
+            .then(response => response.json())
+            .then(data => {
+                clearAndPopulate(provinceSelect, data, 'code', 'name', 'Select a province');
+            })
+            .catch(error => console.error('Error fetching provinces:', error));
+
+        // Fetch districts dynamically based on province selection
+        provinceSelect.addEventListener('change', () => {
+            const provinceCode = provinceSelect.value;
+
+            // Clear dependent dropdowns
+            districtSelect.innerHTML = '<option value="">Select a district</option>';
+            wardSelect.innerHTML = '<option value="">Select a ward</option>';
+
+            if (provinceCode) {
+                fetch(districtAPI)
+                    .then(response => response.json())
+                    .then(data => {
+                        const filteredDistricts = data.filter(d => d.province_code == provinceCode);
+                        clearAndPopulate(districtSelect, filteredDistricts, 'code', 'name', 'Select a district');
+                    })
+                    .catch(error => console.error('Error fetching districts:', error));
+            }
+        });
+
+        // Fetch wards dynamically based on district selection
+        districtSelect.addEventListener('change', () => {
+            const districtCode = districtSelect.value;
+
+            // Clear ward dropdown
+            wardSelect.innerHTML = '<option value="">Select a ward</option>';
+
+            if (districtCode) {
+                fetch(wardAPI)
+                    .then(response => response.json())
+                    .then(data => {
+                        const filteredWards = data.filter(w => w.district_code == districtCode);
+                        clearAndPopulate(wardSelect, filteredWards, 'code', 'name', 'Select a ward');
+                    })
+                    .catch(error => console.error('Error fetching wards:', error));
+            }
+        });
+    </script>
+</body>
+</html>
