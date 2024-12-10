@@ -1,4 +1,4 @@
-﻿@model List<House>
+﻿@model List<HouseSearchModel>
 
 
 
@@ -91,7 +91,7 @@
                                 <form id="form-submit" asp-controller="Houses" asp-action="DetailHouse" method="get">
                                     <input type="hidden" name="id" value="@house.HouseId">
                                     <button type="submit" style="border: none; background: none; padding: 0;">
-                                        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" class="card-img-top" alt="House">
+                                        <img src="@house.ImageUrls" class="card-img-top" alt="House">
                                     </button>
                                 </form>
                                

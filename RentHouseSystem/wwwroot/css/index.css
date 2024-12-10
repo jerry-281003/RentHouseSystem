@@ -1,0 +1,173 @@
+﻿.hero-section {
+    height: 100vh;
+    position: relative;
+    padding-top: 76px;
+}
+
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-section .container {
+        position: relative;
+        z-index: 1;
+    }
+
+.card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+.social-links a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+    .social-links a:hover {
+        opacity: 0.8;
+    }
+
+.navbar {
+    padding: 1rem 0;
+}
+
+.navbar-brand img {
+    margin-right: 0.5rem;
+}
+
+.btn-primary {
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+}
+
+.reviews img {
+    object-fit: cover;
+}
+
+.search-bar {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+    .search-bar .form-control,
+    .search-bar .form-select {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+    }
+
+        .search-bar .form-control::placeholder {
+            color: #666;
+        }
+
+.review-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .review-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+.rating {
+    font-size: 1.1rem;
+}
+
+.features .card {
+    border-radius: 15px;
+    background: #fff;
+    overflow: hidden;
+}
+
+    .features .card i {
+        color: #007bff;
+    }
+
+.highlight-box {
+    border-left: 4px solid #007bff;
+    background-color: rgba(0, 123, 255, 0.05) !important;
+}
+
+.footer-section {
+    padding: 1rem;
+}
+
+.footer-links a {
+    transition: padding-left 0.3s ease;
+}
+
+    .footer-links a:hover {
+        padding-left: 10px;
+        color: #007bff !important;
+    }
+
+.social-links a {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+    .social-links a:hover {
+        transform: translateY(-3px);
+        color: #007bff !important;
+    }
+
+.payment-methods {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+    .payment-methods:hover {
+        opacity: 1;
+    }
+/* General form styling */
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between form elements */
+    align-items: center;
+}
+
+    /* Adjust the width of the keyword input box */
+    .search-form .keyword-input {
+        flex: 2; /* Makes the input field take up more space */
+        min-width: 390px; /* Minimum width to prevent it from being too small */
+    }
+
+    /* Uniform width for other elements */
+    .search-form .form-select {
+        flex: 1; /* Ensure dropdowns remain smaller than the input */
+        max-width: 200px;
+    }
+
+    .search-form .btn {
+        flex: none; /* Prevent button from stretching */
+    }
+
+/* Adjust for small screens */
+@media (max-width: 576px) {
+    .search-form {
+        flex-direction: column; /* Stack form elements vertically */
+        align-items: stretch; /* Make elements full-width */
+    }
+
+        .search-form .keyword-input {
+            min-width: 100%; /* Full-width input on smaller screens */
+        }
+}

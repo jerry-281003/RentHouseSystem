@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="HouseId" class="control-label"></label>
@@ -83,6 +83,9 @@
                 <input asp-for="UpdatedAt" class="form-control" />
                 <span asp-validation-for="UpdatedAt" class="text-danger"></span>
             </div>
+            <label for="images">Upload Images:</label>
+            <input type="file" id="images" name="images" multiple>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -99,34 +102,34 @@
     const districtAPI = 'https://provinces.open-api.vn/api/d/';
     const wardAPI = 'https://provinces.open-api.vn/api/w/';
 
-    const provinceSelect = document.getElementById('province');
+    const provinceSelect = document.getElementById('Province');
     const districtSelect = document.getElementById('district');
     const wardSelect = document.getElementById('ward');
 
-    // Helper function to clear and populate dropdowns
-    const clearAndPopulate = (dropdown, items, valueField, textField, defaultText) => {
+    // Helper function to populate dropdown
+    const populateDropdown = (dropdown, items, valueField, textField, defaultText) => {
         dropdown.innerHTML = `<option value="">${defaultText}</option>`;
         items.forEach(item => {
             const option = document.createElement('option');
-            option.value = item[valueField];
+            option.value = item[textField]; // Use text as value
+            option.setAttribute('data-id', item[valueField]); // Store ID for reference
             option.textContent = item[textField];
             dropdown.appendChild(option);
         });
     };
 
-    // Fetch and populate provinces
+    // Fetch provinces
     fetch(provinceAPI)
         .then(response => response.json())
         .then(data => {
-            clearAndPopulate(provinceSelect, data, 'code', 'name', 'Select a province');
+            populateDropdown(provinceSelect, data, 'code', 'name', 'Select a province');
         })
         .catch(error => console.error('Error fetching provinces:', error));
 
-    // Fetch districts dynamically based on province selection
+    // Fetch districts based on province selection
     provinceSelect.addEventListener('change', () => {
-        const provinceCode = provinceSelect.value;
+        const provinceCode = provinceSelect.options[provinceSelect.selectedIndex].getAttribute('data-id');
 
-        // Clear dependent dropdowns
         districtSelect.innerHTML = '<option value="">Select a district</option>';
         wardSelect.innerHTML = '<option value="">Select a ward</option>';
 
@@ -135,17 +138,16 @@
                 .then(response => response.json())
                 .then(data => {
                     const filteredDistricts = data.filter(d => d.province_code == provinceCode);
-                    clearAndPopulate(districtSelect, filteredDistricts, 'code', 'name', 'Select a district');
+                    populateDropdown(districtSelect, filteredDistricts, 'code', 'name', 'Select a district');
                 })
                 .catch(error => console.error('Error fetching districts:', error));
         }
     });
 
-    // Fetch wards dynamically based on district selection
+    // Fetch wards based on district selection
     districtSelect.addEventListener('change', () => {
-        const districtCode = districtSelect.value;
+        const districtCode = districtSelect.options[districtSelect.selectedIndex].getAttribute('data-id');
 
-        // Clear ward dropdown
         wardSelect.innerHTML = '<option value="">Select a ward</option>';
 
         if (districtCode) {
@@ -153,11 +155,12 @@
                 .then(response => response.json())
                 .then(data => {
                     const filteredWards = data.filter(w => w.district_code == districtCode);
-                    clearAndPopulate(wardSelect, filteredWards, 'code', 'name', 'Select a ward');
+                    populateDropdown(wardSelect, filteredWards, 'code', 'name', 'Select a ward');
                 })
                 .catch(error => console.error('Error fetching wards:', error));
         }
     });
+
 </script>
 
 @section Scripts {

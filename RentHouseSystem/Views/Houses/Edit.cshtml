@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="HouseId" />
             <div class="form-group">
@@ -38,10 +38,13 @@
                 <input asp-for="ContactPhone" class="form-control" />
                 <span asp-validation-for="ContactPhone" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <label for="province">Province:</label>
-                <select id="province" name="province" required>
-                    <option value="">Select a province</option>
+                    <select  id="province" name="province" >
+                       
+                        <option value="">"Select a province</option>
+                        
                 </select>
 
             </div>
@@ -79,17 +82,28 @@
                 <input asp-for="UpdatedAt" class="form-control" />
                 <span asp-validation-for="UpdatedAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            <h3>Current Images</h3>
+            @foreach (var image in Model.Images)
+            {
+                <div>
+                    <img src="@image.ImageUrl" style="width: 100px; height: 100px;" />
+                    <input type="checkbox" name="deleteImages" value="@image.ImageUrl" /> Delete
+                </div>
+            }
+
+            <h3>Upload New Images</h3>
+            <input type="file" name="images" multiple />
+
+            <button type="submit">Save Changes</button>
         </form>
+
+       
     </div>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 <script>
     const provinceAPI = 'https://provinces.open-api.vn/api/p/';
     const districtAPI = 'https://provinces.open-api.vn/api/d/';
@@ -99,14 +113,25 @@
     const districtSelect = document.getElementById('district');
     const wardSelect = document.getElementById('ward');
 
-    // Helper function to populate dropdown
-    const populateDropdown = (dropdown, items, valueField, textField, defaultText) => {
+    // Values from the backend for pre-selection (ensure these are correct data types)
+    const savedProvince = "@Html.Raw(Model.Province)"; // Adjust based on your data type (e.g., number or string)
+    const savedDistrict = "@Html.Raw(Model.District)";
+    const savedWard = "@Html.Raw(Model.Ward)";
+
+    console.log("Saved Province:", savedProvince);
+    console.log("Saved District:", savedDistrict);
+    console.log("Saved Ward:", savedWard);
+
+    // Helper function to populate dropdowns
+    const populateDropdown = (dropdown, items, valueField, textField, defaultText, selectedValue = null) => {
         dropdown.innerHTML = `<option value="">${defaultText}</option>`;
         items.forEach(item => {
             const option = document.createElement('option');
-            option.value = item[textField]; // Use text as value
-            option.setAttribute('data-id', item[valueField]); // Store ID for reference
+            option.value = item[valueField];
             option.textContent = item[textField];
+            if (selectedValue && selectedValue.toString() === item[valueField].toString()) {
+                option.selected = true;
+            }
             dropdown.appendChild(option);
         });
     };
@@ -115,46 +140,71 @@
     fetch(provinceAPI)
         .then(response => response.json())
         .then(data => {
-            populateDropdown(provinceSelect, data, 'code', 'name', 'Select a province');
+            populateDropdown(provinceSelect, data, 'code', 'name', 'Select a province', savedProvince);
+
+            // Trigger district fetch if a province is pre-selected
+            if (savedProvince) {
+                const selectedProvince = data.find(p => p.code.toString() === savedProvince);
+                if (selectedProvince) {
+                    fetchDistricts(selectedProvince.code);
+                }
+            }
         })
         .catch(error => console.error('Error fetching provinces:', error));
 
-    // Fetch districts based on province selection
-    provinceSelect.addEventListener('change', () => {
-        const provinceCode = provinceSelect.options[provinceSelect.selectedIndex].getAttribute('data-id');
+    // Fetch districts based on selected province
+    const fetchDistricts = (provinceCode) => {
+        fetch(districtAPI)
+            .then(response => response.json())
+            .then(data => {
+                const filteredDistricts = data.filter(d => d.province_code == provinceCode);
+                populateDropdown(districtSelect, filteredDistricts, 'code', 'name', 'Select a district', savedDistrict);
 
+                // Trigger ward fetch if a district is pre-selected
+                if (savedDistrict) {
+                    const selectedDistrict = filteredDistricts.find(d => d.code.toString() === savedDistrict);
+                    if (selectedDistrict) {
+                        fetchWards(selectedDistrict.code);
+                    }
+                }
+            })
+            .catch(error => console.error('Error fetching districts:', error));
+    };
+
+    // Fetch wards based on selected district
+    const fetchWards = (districtCode) => {
+        fetch(wardAPI)
+            .then(response => response.json())
+            .then(data => {
+                const filteredWards = data.filter(w => w.district_code == districtCode);
+                populateDropdown(wardSelect, filteredWards, 'code', 'name', 'Select a ward', savedWard);
+            })
+            .catch(error => console.error('Error fetching wards:', error));
+    };
+
+    // Event listeners for dropdown changes
+    provinceSelect.addEventListener('change', () => {
+        const provinceCode = provinceSelect.value;
         districtSelect.innerHTML = '<option value="">Select a district</option>';
         wardSelect.innerHTML = '<option value="">Select a ward</option>';
 
         if (provinceCode) {
-            fetch(districtAPI)
-                .then(response => response.json())
-                .then(data => {
-                    const filteredDistricts = data.filter(d => d.province_code == provinceCode);
-                    populateDropdown(districtSelect, filteredDistricts, 'code', 'name', 'Select a district');
-                })
-                .catch(error => console.error('Error fetching districts:', error));
+            fetchDistricts(provinceCode);
         }
     });
 
-    // Fetch wards based on district selection
     districtSelect.addEventListener('change', () => {
-        const districtCode = districtSelect.options[districtSelect.selectedIndex].getAttribute('data-id');
-
+        const districtCode = districtSelect.value;
         wardSelect.innerHTML = '<option value="">Select a ward</option>';
 
         if (districtCode) {
-            fetch(wardAPI)
-                .then(response => response.json())
-                .then(data => {
-                    const filteredWards = data.filter(w => w.district_code == districtCode);
-                    populateDropdown(wardSelect, filteredWards, 'code', 'name', 'Select a ward');
-                })
-                .catch(error => console.error('Error fetching wards:', error));
+            fetchWards(districtCode);
         }
     });
-
 </script>
+
+
+
 
 @section Scripts {
     @{
