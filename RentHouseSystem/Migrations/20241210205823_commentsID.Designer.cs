@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentHouseSystem.Data;
 
@@ -11,9 +12,11 @@ using RentHouseSystem.Data;
 namespace RentHouseSystem.Migrations
 {
     [DbContext(typeof(RentHouseSystemContext))]
-    partial class RentHouseSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20241210205823_commentsID")]
+    partial class commentsID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,7 +264,7 @@ namespace RentHouseSystem.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.ToTable("Comment", (string)null);
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("RentHouseSystem.Models.House", b =>
@@ -312,7 +315,7 @@ namespace RentHouseSystem.Migrations
 
                     b.HasKey("HouseId");
 
-                    b.ToTable("House", (string)null);
+                    b.ToTable("House");
                 });
 
             modelBuilder.Entity("RentHouseSystem.Models.Image", b =>
@@ -335,7 +338,7 @@ namespace RentHouseSystem.Migrations
 
                     b.HasIndex("HouseId");
 
-                    b.ToTable("Image", (string)null);
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("RentHouseSystem.Models.User", b =>

@@ -1,4 +1,7 @@
-﻿namespace RentHouseSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RentHouseSystem.Models
 {
     public enum status
     {
@@ -8,6 +11,7 @@
     }
     public class House
     {
+        [Key]
         public string HouseId { get; set; }
         public string ownerId { get; set; }
         public string title { get; set; }

@@ -18,9 +18,15 @@ namespace RentHouseSystem.Data
         public DbSet<RentHouseSystem.Models.House> House { get; set; } = default!;
         public DbSet<RentHouseSystem.Models.User> User { get; set; } = default!;
 
+
         internal Task<object> FindAsync(string id)
         {
             throw new NotImplementedException();
         }
+
+
+        public DbSet<RentHouseSystem.Models.Comment> Comment { get; set; } = default!;
+
+        
     }
 }
