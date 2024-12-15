@@ -1,4 +1,7 @@
-﻿namespace RentHouseSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RentHouseSystem.Models
 {
     public enum status
     {
@@ -6,8 +9,16 @@
         approved,
         rejected
     }
+    public enum vehicles
+    {
+        bicycle,
+        motorbike,
+        noVehicles,
+        both
+    }
     public class House
     {
+        [Key]
         public string HouseId { get; set; }
         public string ownerId { get; set; }
         public string title { get; set; }
@@ -20,7 +31,8 @@
         public status Status { get; set; }
         public DateTime CreatedAt { get; set; } 
         public DateTime UpdatedAt { get; set; }
-
+        public vehicles AcceptableVehicles { get; set; }
+        public TimeSpan CloseTime { get; set; }
         public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 

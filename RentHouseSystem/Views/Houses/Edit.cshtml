@@ -1,4 +1,4 @@
-﻿@model RentHouseSystem.Models.House
+﻿@model RentHouseSystem.Models.FacilitiesHouseViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,59 +12,58 @@
     <div class="col-md-4">
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="HouseId" />
+            <input type="hidden" asp-for="House.HouseId" />
             <div class="form-group">
-                <label asp-for="ownerId" class="control-label"></label>
-                <input asp-for="ownerId" class="form-control" />
-                <span asp-validation-for="ownerId" class="text-danger"></span>
+                <label asp-for="House.ownerId" class="control-label"></label>
+                <input asp-for="House.ownerId" class="form-control" />
+                <span asp-validation-for="House.ownerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="title" class="control-label"></label>
-                <input asp-for="title" class="form-control" />
-                <span asp-validation-for="title" class="text-danger"></span>
+                <label asp-for="House.title" class="control-label"></label>
+                <input asp-for="House.title" class="form-control" />
+                <span asp-validation-for="House.title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <label asp-for="House.Address" class="control-label"></label>
+                <input asp-for="House.Address" class="form-control" />
+                <span asp-validation-for="House.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="House.Description" class="control-label"></label>
+                <input asp-for="House.Description" class="form-control" />
+                <span asp-validation-for="House.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ContactPhone" class="control-label"></label>
-                <input asp-for="ContactPhone" class="form-control" />
-                <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                <label asp-for="House.ContactPhone" class="control-label"></label>
+                <input asp-for="House.ContactPhone" class="form-control" />
+                <span asp-validation-for="House.ContactPhone" class="text-danger"></span>
+            </div>
+            
+           
+            <div class="form-group"> <label asp-for="House.Province">Province:</label>
+            <select asp-for="House.Province" id="province" class="form-control" required>
+                <option value="">Select a province</option>
+            </select>
+            <span asp-validation-for="House.District" class="text-danger"></span>
+    </div>
+            <div class="form-group"> <label asp-for="House.District">District:</label> 
+                <select asp-for="House.District" id="district" class="form-control" required> 
+                    <option value="">Select a district</option> 
+                    </select>
+                    <span asp-validation-for="House.District" class="text-danger"></span> 
+                </div>
+            <div class="form-group">
+                <label asp-for="House.Ward">Ward:</label>
+                <select asp-for="House.Ward" id="ward" class="form-control" required>
+                    <option value="">Select a ward</option>
+                </select>
+                <span asp-validation-for="House.Ward" class="text-danger"></span>
             </div>
             
             <div class="form-group">
-                <label for="province">Province:</label>
-                    <select  id="province" name="province" >
-                       
-                        <option value="">"Select a province</option>
-                        
-                </select>
+                <label asp-for="House.Status" class="control-label"></label>
 
-            </div>
-            <div class="form-group">
-                <label for="district">District:</label>
-                <select id="district" name="district" required>
-                    <option value="">Select a district</option>
-                </select>
-
-            </div>
-            <div class="form-group">
-                <label for="ward">Ward:</label>
-                <select id="ward" name="ward" required>
-                    <option value="">Select a ward</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-
-                <select asp-for="Status" class="form-control">
+                <select asp-for="House.Status" class="form-control">
 
 
                     <option value="pencding">pencding</option>
@@ -73,26 +72,87 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                <label asp-for="House.CreatedAt" class="control-label"></label>
+                <input asp-for="House.CreatedAt" class="form-control" />
+                <span asp-validation-for="House.CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                <label asp-for="House.UpdatedAt" class="control-label"></label>
+                <input asp-for="House.UpdatedAt" class="form-control" />
+                <span asp-validation-for="House.UpdatedAt" class="text-danger"></span>
             </div>
-            <h3>Current Images</h3>
-            @foreach (var image in Model.Images)
+
+            <input type="hidden" asp-for="Facilities.Id" />
+            <div class="form-group">
+                <label asp-for="Facilities.HouseId" class="control-label"></label>
+                <input asp-for="Facilities.HouseId" class="form-control" />
+                <span asp-validation-for="Facilities.HouseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facilities.InventoryEquipment" class="control-label"></label>
+                <input asp-for="Facilities.InventoryEquipment" class="form-control" />
+                <span asp-validation-for="Facilities.InventoryEquipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facilities.UtilityCost" class="control-label"></label>
+                <input asp-for="Facilities.UtilityCost" class="form-control" />
+                <span asp-validation-for="Facilities.UtilityCost" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Facilities.AirConditioning" /> @Html.DisplayNameFor(model => model.Facilities.AirConditioning)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Facilities.MajorAppliances" /> @Html.DisplayNameFor(model => model.Facilities.MajorAppliances)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facilities.NumberOfBedroom" class="control-label"></label>
+                <input asp-for="Facilities.NumberOfBedroom" class="form-control" />
+                <span asp-validation-for="Facilities.NumberOfBedroom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facilities.ToiletAndBathroom" class="control-label"></label>
+                <input asp-for="Facilities.ToiletAndBathroom" class="form-control" />
+                <span asp-validation-for="Facilities.ToiletAndBathroom" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Facilities.Pet" /> @Html.DisplayNameFor(model => model.Facilities.Pet)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facilities.DepositRequired" class="control-label"></label>
+                <input asp-for="Facilities.DepositRequired" class="form-control" />
+                <span asp-validation-for="Facilities.DepositRequired" class="text-danger"></span>
+            </div>
+         
+            @if (@Model.House.Images != null && @Model.House.Images.Count > 0)
             {
-                <div>
-                    <img src="@image.ImageUrl" style="width: 100px; height: 100px;" />
-                    <input type="checkbox" name="deleteImages" value="@image.ImageUrl" /> Delete
+                <div class="row">
+                    @foreach (var img in @Model.House.Images)
+                    {
+                        <div class="col-md-3 text-center">
+                            <img src="@img.ImageUrl" alt="House Image" style="width: 100%; height: auto;" />
+                            <div>
+                                <label>
+                                    <input type="checkbox" name="imagesToDelete" value="@img.ImageId" />
+                                    Delete
+                                </label>
+                            </div>
+                        </div>
+                    }
                 </div>
+            }
+            else
+            {
+                <p>No images uploaded.</p>
             }
 
             <h3>Upload New Images</h3>
-            <input type="file" name="images" multiple />
+            <input type="file" name="uploadedImages" multiple />
 
             <button type="submit">Save Changes</button>
         </form>
@@ -114,9 +174,9 @@
     const wardSelect = document.getElementById('ward');
 
     // Values from the backend for pre-selection (ensure these are correct data types)
-    const savedProvince = "@Html.Raw(Model.Province)"; // Adjust based on your data type (e.g., number or string)
-    const savedDistrict = "@Html.Raw(Model.District)";
-    const savedWard = "@Html.Raw(Model.Ward)";
+    const savedProvince = "@Html.Raw(Model.House.Province)";
+    const savedDistrict = "@Html.Raw(Model.House.District)";
+    const savedWard = "@Html.Raw(Model.House.Ward)";
 
     console.log("Saved Province:", savedProvince);
     console.log("Saved District:", savedDistrict);
@@ -127,9 +187,9 @@
         dropdown.innerHTML = `<option value="">${defaultText}</option>`;
         items.forEach(item => {
             const option = document.createElement('option');
-            option.value = item[valueField];
+            option.value = item[textField];  // Using text value instead of ID
             option.textContent = item[textField];
-            if (selectedValue && selectedValue.toString() === item[valueField].toString()) {
+            if (selectedValue && selectedValue.toString() === item[textField].toString()) {
                 option.selected = true;
             }
             dropdown.appendChild(option);
@@ -144,7 +204,7 @@
 
             // Trigger district fetch if a province is pre-selected
             if (savedProvince) {
-                const selectedProvince = data.find(p => p.code.toString() === savedProvince);
+                const selectedProvince = data.find(p => p.name === savedProvince);
                 if (selectedProvince) {
                     fetchDistricts(selectedProvince.code);
                 }
@@ -162,7 +222,7 @@
 
                 // Trigger ward fetch if a district is pre-selected
                 if (savedDistrict) {
-                    const selectedDistrict = filteredDistricts.find(d => d.code.toString() === savedDistrict);
+                    const selectedDistrict = filteredDistricts.find(d => d.name === savedDistrict);
                     if (selectedDistrict) {
                         fetchWards(selectedDistrict.code);
                     }
@@ -202,6 +262,9 @@
         }
     });
 </script>
+
+
+
 
 
 
