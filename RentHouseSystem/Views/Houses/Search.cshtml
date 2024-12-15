@@ -88,7 +88,7 @@
                        
                         <div class="card h-100 shadow-sm">
 
-                                <form id="form-submit" asp-controller="Houses" asp-action="DetailHouse" method="get">
+                                <form id="form-submit" asp-controller="Admin" asp-action="DetailHouse" method="get">
                                     <input type="hidden" name="id" value="@house.HouseId">
                                     <button type="submit" style="border: none; background: none; padding: 0;">
                                         <img src="@house.ImageUrls" class="card-img-top" alt="House">
@@ -101,18 +101,12 @@
                                         <h5 class="card-title mb-0">@house.title</h5>
                                         <span class="badge bg-primary">@house.Address</span>
                                     </div>
-                                    <p class="card-text text-muted">Luxurious 4-bedroom villa with modern amenities</p>
+                                    <p class="card-text text-muted">@house.Description</p>
                                     <div class="d-flex align-items-center mb-3">
                                         <i class="bi bi-geo-alt-fill text-primary me-2"></i>
-                                        <small>Beverly Hills, CA</small>
+                                        <small>@house.Address</small>
                                     </div>
-                                    <div class="rating">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <i class="bi bi-star-half text-warning"></i>
-                                    </div>
+                                   
                                 </div>
                            
                             

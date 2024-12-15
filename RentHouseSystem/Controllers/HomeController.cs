@@ -20,6 +20,7 @@ namespace RentHouseSystem.Controllers
 
         public IActionResult Privacy()
         {
+           
             return View();
         }
        

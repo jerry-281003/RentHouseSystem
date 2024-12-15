@@ -1,7 +1,7 @@
 ﻿@using System.Text.Json
 @using Newtonsoft.Json
 
-@model RentHouseSystem.Models.House
+@model RentHouseSystem.Models.FacilitiesHouse
 @{
     string defaultAddress = $"{Model.Address}, {Model.Ward}, {Model.District}, {Model.Province}";
 }
@@ -57,21 +57,33 @@
         </div>
 
         <div class="row">
-            
+
             <div class="col-md-8">
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Basic Information</h5>
-                        <p><i class="bi bi-geo-alt-fill"></i> @defaultAddress</p>
-                        <p><i class="bi bi-telephone-fill"></i> <a href="tel:+@Model.ContactPhone">@Model.ContactPhone</a></p>
-                        <p><i class="bi bi-clock-fill"></i> Viewings: 9:00 AM - 6:00 PM</p>
+                        <p><i class="bi bi-geo-alt-fill"></i> @Model.Address</p>
+                        <p><i class="bi bi-telephone-fill"></i> <a href="tel:+1234567890">@Model.ContactPhone</a></p>
+                        <p><i class="bi bi-clock-fill"></i> Close Tine: @Model.CloseTime</p>
                         <div class="vehicles mb-3">
-                            <span class="badge bg-secondary me-2"><i class="bi bi-car-front-fill"></i> Car Parking</span>
-                            <span class="badge bg-secondary me-2"><i class="bi bi-bicycle"></i> Bicycle Storage</span>
+                            @if(Model.AcceptableVehicles== vehicles.bicycle)
+                            {
+                                <span class="badge bg-secondary me-2"><i class="bi bi-bicycle"></i> Bicycle Storage</span>
+                            }
+                            @if (Model.AcceptableVehicles == vehicles.motorbike)
+                            {
+                                <span class="badge bg-secondary me-2"><i class="bi bi-bicycle"></i> Motobike Storage</span>
+                            }
+                            @if (Model.AcceptableVehicles == vehicles.both)
+                            {
+                                <span class="badge bg-secondary me-2"><i class="bi bi-bicycle"></i> Motobike Storage</span>
+                                <span class="badge bg-secondary me-2"><i class="bi bi-bicycle"></i> Bicycle Storage</span>
+                            }
+                            
                         </div>
                         <p class="description">
-                           @Model.Description<br>
-                            <a href="#" class="text-primary">Read More</a>
+                            @Model.Description<br>
+                            
                         </p>
                     </div>
                 </div>
@@ -81,21 +93,35 @@
                         <h5 class="card-title">Key Facilities</h5>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <p><i class="bi bi-house-gear-fill"></i> Equipment: Walk-in closets, Washer/Dryer</p>
-                                <p><i class="bi bi-lightning-fill"></i> Utilities included: </p>
-                                <p><i class="bi bi-snow"></i> Air Conditioning: Yes</p>
+                                <p><i class="bi bi-house-gear-fill"></i> Equipment: @Model.InventoryEquipment</p>
+                                <p><i class="bi bi-lightning-fill"></i> Utilities included: @Model.UtilityCost</p>
+                                @if(Model.AirConditioning==true){
+                                    <p><i class="bi bi-snow"></i> Air Conditioning: Yes</p>
+                                }
+                                else
+                                {
+                                    <p><i class="bi bi-snow"></i> Air Conditioning: No</p>
+                                }
+
                             </div>
                             <div class="col-md-6">
-                                <p><i class="bi bi-door-open-fill"></i> 4 Bedrooms</p>
-                                <p><i class="bi bi-droplet-fill"></i> 3.5 Bathrooms</p>
-                                <p><i class="bi bi-piggy-bank-fill"></i> Deposit: $5,000</p>
-                                <p><i class="bi bi-pet-fill"></i> Pets Allowed: Yes</p>
+                                <p><i class="bi bi-door-open-fill"></i> @Model.NumberOfBedroom Bedrooms</p>
+                                <p><i class="bi bi-droplet-fill"></i> Bathrooms and Toilet:@Model.ToiletAndBathroom</p>
+                                <p><i class="bi bi-piggy-bank-fill"></i> Deposit: $@Model.DepositRequired</p>
+                                @if (Model.Pet == true)
+                                {
+                                    <p><i class="bi bi-pet-fill"></i> Pets Allowed: Yes</p>
+                                }
+                                else
+                                {
+                                    <p><i class="bi bi-pet-fill"></i> Pets Allowed: No</p>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="col-md-4">
                 <div class="card">
@@ -104,8 +130,8 @@
                         <form asp-controller="Comments" asp-action="UpComment" method="post">
                             <input type="hidden" name="email" value="@User.Identity.Name">
                             <input type="hidden" name="HouseId" value="@Model.HouseId">
-                            
-                            
+
+
                             <div class="mb-3">
                                 <input class="form-control" name="CommentContent" type="text" placeholder="Comment" />
                             </div>
@@ -118,7 +144,7 @@
             <div class="col-md-8">
                 <div class="card mb-4">
                     <div class="card-body">
-                        
+
                         <div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
 
                         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -167,7 +193,7 @@
 
                         // Update the marker position
                         marker.setLatLng([lat, lon]);
-                        marker.bindPopup(` ${results[0].display_name}`).openPopup();
+                        marker.bindPopup(`Default Location: ${results[0].display_name}`).openPopup();
                     } else {
                         alert("Could not find the location for the provided address.");
                     }

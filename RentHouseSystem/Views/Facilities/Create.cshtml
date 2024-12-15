@@ -1,0 +1,73 @@
+﻿@model RentHouseSystem.Models.Facilities
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Facilities</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HouseId" class="control-label"></label>
+                <input asp-for="HouseId" class="form-control" />
+                <span asp-validation-for="HouseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryEquipment" class="control-label"></label>
+                <input asp-for="InventoryEquipment" class="form-control" />
+                <span asp-validation-for="InventoryEquipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityCost" class="control-label"></label>
+                <input asp-for="UtilityCost" class="form-control" />
+                <span asp-validation-for="UtilityCost" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AirConditioning" /> @Html.DisplayNameFor(model => model.AirConditioning)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="MajorAppliances" /> @Html.DisplayNameFor(model => model.MajorAppliances)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfBedroom" class="control-label"></label>
+                <input asp-for="NumberOfBedroom" class="form-control" />
+                <span asp-validation-for="NumberOfBedroom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToiletAndBathroom" class="control-label"></label>
+                <input asp-for="ToiletAndBathroom" class="form-control" />
+                <span asp-validation-for="ToiletAndBathroom" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Pet" /> @Html.DisplayNameFor(model => model.Pet)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositRequired" class="control-label"></label>
+                <input asp-for="DepositRequired" class="form-control" />
+                <span asp-validation-for="DepositRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

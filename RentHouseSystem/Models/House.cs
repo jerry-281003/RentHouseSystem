@@ -9,6 +9,13 @@ namespace RentHouseSystem.Models
         approved,
         rejected
     }
+    public enum vehicles
+    {
+        bicycle,
+        motorbike,
+        noVehicles,
+        both
+    }
     public class House
     {
         [Key]
@@ -24,7 +31,8 @@ namespace RentHouseSystem.Models
         public status Status { get; set; }
         public DateTime CreatedAt { get; set; } 
         public DateTime UpdatedAt { get; set; }
-
+        public vehicles AcceptableVehicles { get; set; }
+        public TimeSpan CloseTime { get; set; }
         public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 

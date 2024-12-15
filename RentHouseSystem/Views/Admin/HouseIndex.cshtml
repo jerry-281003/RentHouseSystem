@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<RentHouseSystem.Models.House>
 
-
-
 <html lang="en">
 
 <head>
@@ -46,7 +44,7 @@
 			<main class="content">
 				<div class="container-fluid">
 
-					<h1 class="h3 mb-3">Censorship of rental information</h1>
+					<h1 class="h3 mb-3">Course</h1>
 
 					<div class="row">
 						<div class="col-12">
@@ -68,17 +66,17 @@
 											}
 									</style>
 
-									
+									<p>
+										<a asp-action="Create">Create New</a>
+									</p>
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.ownerId)
-                                                </th>
+                                              
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.title)
                                                 </th>
-                                                
+                                               
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -86,19 +84,27 @@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.ownerId)
-                                                    </td>
-                                                    <td>
-														<a asp-controller="Houses" asp-action="DetailHouse" asp-route-id="@item.HouseId"> @item.title</a>
-													</td>
                                                    
                                                     <td>
-														<a asp-action="Approved" asp-route-id="@item.HouseId"> approved  </a> |
-														<a asp-action="Rejected" asp-route-id="@item.HouseId"> rejected</a> |
-                                                       
+                                                        @Html.DisplayFor(modelItem => item.title)
+                                                    </td>                                                   
+                                                    <td>
+														<form id="form-submit" asp-controller="Admin" asp-action="DetailHouse" method="get">
+															<input type="hidden" name="id" value="@item.HouseId" />
+															<button type="submit" class="btn btn-link">Detail</button>
+														</form>
+                                                        
                                                     </td>
-                                                </tr>
+													<td>
+														<a asp-controller="Houses" asp-action="Edit" asp-route-id="@item.HouseId">Edit</a>
+													</td>
+													<td>
+														<a asp-controller="Houses" asp-action="Edit" asp-route-id="@item.HouseId">Delete</a>
+													</td>
+													<td>
+														<a asp-action="CommentsIndex" asp-route-id="@item.HouseId">Comments</a> 
+													</td>
+												</tr>
                                             }
                                         </tbody>
                                     </table>
