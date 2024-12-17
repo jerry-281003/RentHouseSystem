@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentHouseSystem.Data;
 using RentHouseSystem.Models;
+using System.Data;
 
 namespace RentHouseSystem.Controllers
 {
@@ -14,38 +16,49 @@ namespace RentHouseSystem.Controllers
             _context = context;
 
         }
+        [Authorize(Roles = "Admin,owner")]
         public IActionResult Index()
         {
             return View();
         }
-		public async Task<IActionResult> CommentsIndex(string id)
+        [Authorize(Roles = "owner")]
+        public async Task<IActionResult> CommentsIndex(string id)
 		{
-			var comments = _context.Comment
-				.Where(m => m.HouseId == id)
-				.ToList();
-			var house = await _context.House
-				 .FirstOrDefaultAsync(m => m.HouseId == id);
-			return View(comments); // Pass the comments to the view
-		}
-		public async Task<IActionResult> HouseIndex()
+            var comments = await _context.Comment
+                .Where(c => c.HouseId == id)
+                .OrderBy(c => c.CreatedAt)
+                .ToListAsync();
+
+            return View(comments);
+        }
+        [Authorize(Roles = "owner")]
+        public async Task<IActionResult> HouseIndex()
         {
-            return _context.House != null ?
-                        View(await _context.House.ToListAsync()) :
-                        Problem("Entity set 'RentHouseSystemContext.House'  is null.");
+            var house = await _context.House.Where(h => h.Invisible != true).ToListAsync();
+            return View(house);
         }
         public async Task<IActionResult> DetailHouse(string id)
         {
-            if (id == null || _context.House == null)
+            var house = await _context.House
+     
+     .FirstOrDefaultAsync(m => m.HouseId == id);
+
+            if (house == null)
             {
-                return NotFound();
+                return NotFound("House not found.");
             }
 
-            var house = await _context.House
-                 .FirstOrDefaultAsync(m => m.HouseId == id);
             var facilities = await _context.Facilities
-                 .FirstOrDefaultAsync(m => m.HouseId == id);
+                .FirstOrDefaultAsync(m => m.HouseId == id);
+
+            if (facilities == null)
+            {
+                return NotFound("Facilities not found.");
+            }
+            
             var facilititesHouse = new FacilitiesHouse()
             {
+                Id= facilities.Id,
                 HouseId = house.HouseId,
                 ownerId = house.ownerId,
                 title = house.title,
@@ -60,7 +73,8 @@ namespace RentHouseSystem.Controllers
                 UpdatedAt = house.UpdatedAt,
                 CloseTime = house.CloseTime,
                 AcceptableVehicles = house.AcceptableVehicles,
-
+               Image= _context.Image.Where(h =>h.HouseId == id).ToList(),
+                
                 InventoryEquipment = facilities.InventoryEquipment,
                 UtilityCost = facilities.UtilityCost,
                 AirConditioning = facilities.AirConditioning,
@@ -73,17 +87,21 @@ namespace RentHouseSystem.Controllers
             
             return View(facilititesHouse);
         }
+        [Authorize(Roles = "owner")]
         public IActionResult Create()
         {
             return View();
         }
+        [Authorize(Roles = "owner")]
         [HttpPost]
         public async Task<IActionResult> Create(FacilitiesHouse facilititesHouse, List<IFormFile> images)
         {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
             var house = new House
             {
                 HouseId = facilititesHouse.HouseId,
-                ownerId = facilititesHouse.ownerId,
+                ownerId = user.Id,
                 title = facilititesHouse.title,
                 Address = facilititesHouse.Address,
                 Description = facilititesHouse.Description,
@@ -133,6 +151,7 @@ namespace RentHouseSystem.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("HouseIndex", "Admin");
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CheckRentalInfor()
         {
             var pendingHouses = _context.House
@@ -143,6 +162,7 @@ namespace RentHouseSystem.Controllers
             return View(pendingHouses);          
                           
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Approved(string id)
         {
             var house = await _context.House
@@ -156,6 +176,7 @@ namespace RentHouseSystem.Controllers
 			await _context.SaveChangesAsync();
 			return RedirectToAction("CheckRentalInfor", "Admin");
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Rejected(string id)
         {
             var house = await _context.House

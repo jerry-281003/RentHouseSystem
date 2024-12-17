@@ -33,6 +33,7 @@ namespace RentHouseSystem.Models
         public DateTime UpdatedAt { get; set; }
         public vehicles AcceptableVehicles { get; set; }
         public TimeSpan CloseTime { get; set; }
+        public bool? Invisible { get; set; }
         public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 
@@ -67,5 +68,6 @@ namespace RentHouseSystem.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string ImageUrls { get; set; } 
+        
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,17 +10,60 @@ using Microsoft.EntityFrameworkCore;
 using RentHouseSystem.Data;
 using RentHouseSystem.Models;
 
+
 namespace RentHouseSystem.Controllers
 {
     public class CommentsController : Controller
     {
         private readonly RentHouseSystemContext _context;
+        
 
         public CommentsController(RentHouseSystemContext context)
         {
             _context = context;
+           
         }
+        public async Task SendEmailAsync(string recipientEmail, string subject, string message)
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com") // Replace with your SMTP details
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("thanhdn21@uef.edu.vn", "thanhpro123"),
+                EnableSsl = true,
+            };
 
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("thanhdn21@uef.edu.vn"),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true,
+            };
+
+            mailMessage.To.Add(recipientEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Repline(int commnetId, string commentContent)
+        {
+            
+            var comment = await _context.Comment.FirstOrDefaultAsync(m => m.CommentId == commnetId);
+            var reply = new Comment
+            {
+                
+                HouseId = comment.HouseId, // Optionally link to the same house
+                UserId = comment.UserId, // Current logged-in user
+                CommentContent = commentContent,
+                email = comment.email, // Ensure the email is fetched
+                ReplineId = commnetId, // Link the reply to the parent comment
+                CreatedAt = DateTime.Now
+            };
+            _context.Add(reply);
+            _context.SaveChanges();
+            return RedirectToAction("CommentsIndex", "Admin", new { id = comment.HouseId });
+        }
+        
         public async Task<IActionResult> UpComment(string HouseId, string CommentContent)
         {
             if (!User.Identity.IsAuthenticated)
@@ -26,8 +71,10 @@ namespace RentHouseSystem.Controllers
                 return Unauthorized("You need to log in to comment.");
             }
 
+            var house = await _context.House.FirstOrDefaultAsync(m => m.HouseId == HouseId);
+            
             // Find the UserId based on User.Identity.Name
-            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var user = _context.Users.FirstOrDefault(u => u.Id == house.ownerId);
             if (user == null)
             {
                 return NotFound("User not found.");
@@ -38,11 +85,13 @@ namespace RentHouseSystem.Controllers
             {
                 UserId = user.Id,
                 HouseId = HouseId,
-                email= User.Identity.Name,
+                email= user.Email,
                 CommentContent = CommentContent,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                ReplineId =null
             };
-
+            var subject = "Notify comment about "+house.title;
+            SendEmailAsync(comment.email,subject, comment.CommentContent);
             // Add to the database and save changes
             _context.Add(comment);
             _context.SaveChanges();
@@ -85,7 +134,7 @@ namespace RentHouseSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentId,HouseId,UserId,CommentContent,email,CreatedAt")] Comment comment)
+        public async Task<IActionResult> Create([Bind("CommentId,HouseId,UserId,CommentContent,email,CreatedAt,ReplineId")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -142,7 +191,7 @@ namespace RentHouseSystem.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("DetailHouse","Admin");
             }
             return View(comment);
         }

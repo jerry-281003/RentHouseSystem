@@ -34,6 +34,11 @@
                 <input asp-for="email" class="form-control" />
                 <span asp-validation-for="email" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ReplineId" class="control-label"></label>
+                <input asp-for="ReplineId" class="form-control" />
+                <span asp-validation-for="ReplineId" class="text-danger"></span>
+            </div>
             
                 <input type="hidden" asp-for="CreatedAt" value="@currentDateTime"/>
                         

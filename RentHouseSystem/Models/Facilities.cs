@@ -38,6 +38,7 @@
         public DateTime UpdatedAt { get; set; }
         public vehicles AcceptableVehicles { get; set; }
         public TimeSpan CloseTime { get; set; }
+        public List<Image> Image { get; set; } 
     }
     public class FacilitiesHouseViewModel
     {
