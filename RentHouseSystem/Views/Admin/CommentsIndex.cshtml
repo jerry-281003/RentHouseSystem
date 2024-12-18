@@ -1,50 +1,148 @@
 ﻿@model IEnumerable<RentHouseSystem.Models.Comment>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h1>Index</h1>
+<html lang="en">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.CommentContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-              
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommentContent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CommentId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="AdminKit">
+	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+
+	<link rel="canonical" href="https://demo-basic.adminkit.io/pages-blank.html" />
+
+	<title>Blank Page | AdminKit Demo</title>
+
+	<link href="/css/app.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="/Admin">
+					<span class="align-middle">AdminKit</span>
+				</a>
+				<partial name="_Navbar" />
+		</nav>
+
+		<div class="main">
+			
+
+			<main class="content">
+				<div class="container-fluid">
+
+					<h1 class="h3 mb-3">Comment</h1>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h3>  <a class="nav-link text-dark" asp-action="Index">Back</a> </h3>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-4">
+											<ul class="list-group">
+												@foreach (var comment in Model.Where(c => c.ReplineId == null)) // Top-level comments
+												{
+													<li class="list-group-item" style="width: 750px;">
+														<strong>@comment.email:</strong> @comment.CommentContent
+														<small class="text-muted">(@comment.CreatedAt.ToString("yyyy-MM-dd HH:mm"))</small>
+
+														<!-- Reply Button -->
+														<button class="btn btn-link btn-sm" onclick="toggleReplyForm(@comment.CommentId)">Reply</button>
+
+														<!-- Reply Form -->
+														<div id="reply-form-@comment.CommentId" style="display: none; margin-top: 10px;">
+															<form asp-controller="Comments" asp-action="Repline" method="post">
+																<input type="hidden" name="commnetId" value="@comment.CommentId" />
+																<textarea name="commentContent" class="form-control" placeholder="Write a reply..." required></textarea>
+																<button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+															</form>
+														</div>
+
+														<!-- Replies -->
+														@if (Model.Any(r => r.ReplineId == comment.CommentId))
+														{
+															<ul class="list-group mt-2">
+																@foreach (var reply in Model.Where(r => r.ReplineId == comment.CommentId)) // Replies
+																{
+																	<li class="list-group-item">
+																		<strong>@reply.email:</strong> @reply.CommentContent
+																		<small class="text-muted">(@reply.CreatedAt.ToString("yyyy-MM-dd HH:mm"))</small>
+																		@if(reply.email != User.Identity.Name)
+																		{
+																			<button class="btn btn-link btn-sm" onclick="toggleReplyForm(@comment.CommentId)">Reply</button>
+
+																			<div id="reply-form-@comment.CommentId" style="display: none; margin-top: 10px;">
+																				<form asp-controller="Comments" asp-action="Repline" method="post">
+																					<input type="hidden" name="commnetId" value="@comment.CommentId" />
+																					<textarea name="commentContent" class="form-control" placeholder="Write a reply..." required></textarea>
+																					<button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+																				</form>
+																			</div>
+																		}
+																		
+
+																	</li>
+																	
+																}
+															</ul>
+														}
+													</li>
+												}
+											</ul>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+
+		</div>
+	</div>
+
+	<script src="/js/app.js"></script>
+	@section Scripts {
+		<script>
+			function toggleReplyForm(commentId) {
+				const replyForm = document.getElementById(`reply-form-${commentId}`);
+				if (replyForm.style.display === "none") {
+					replyForm.style.display = "block";
+				} else {
+					replyForm.style.display = "none";
+				}
+			}
+		</script>
+	}
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

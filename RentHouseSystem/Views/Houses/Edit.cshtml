@@ -1,267 +1,326 @@
 ﻿@model RentHouseSystem.Models.FacilitiesHouseViewModel
 
-@{
-    ViewData["Title"] = "Edit";
-}
+<html lang="en">
 
-<h1>Edit</h1>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-<h4>House</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="House.HouseId" />
-            <div class="form-group">
-                <label asp-for="House.ownerId" class="control-label"></label>
-                <input asp-for="House.ownerId" class="form-control" />
-                <span asp-validation-for="House.ownerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="House.title" class="control-label"></label>
-                <input asp-for="House.title" class="form-control" />
-                <span asp-validation-for="House.title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="House.Address" class="control-label"></label>
-                <input asp-for="House.Address" class="form-control" />
-                <span asp-validation-for="House.Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="House.Description" class="control-label"></label>
-                <input asp-for="House.Description" class="form-control" />
-                <span asp-validation-for="House.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="House.ContactPhone" class="control-label"></label>
-                <input asp-for="House.ContactPhone" class="form-control" />
-                <span asp-validation-for="House.ContactPhone" class="text-danger"></span>
-            </div>
-            
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+
+    <link rel="canonical" href="https://demo-basic.adminkit.io/pages-blank.html" />
+
+    <title>Blank Page | AdminKit Demo</title>
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar js-sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="/Admin">
+                    <span class="align-middle">AdminKit</span>
+                </a>
+                <partial name="_Navbar" />
+        </nav>
+
+        <div class="main">
            
-            <div class="form-group"> <label asp-for="House.Province">Province:</label>
-            <select asp-for="House.Province" id="province" class="form-control" required>
-                <option value="">Select a province</option>
-            </select>
-            <span asp-validation-for="House.District" class="text-danger"></span>
-    </div>
-            <div class="form-group"> <label asp-for="House.District">District:</label> 
-                <select asp-for="House.District" id="district" class="form-control" required> 
-                    <option value="">Select a district</option> 
-                    </select>
-                    <span asp-validation-for="House.District" class="text-danger"></span> 
-                </div>
-            <div class="form-group">
-                <label asp-for="House.Ward">Ward:</label>
-                <select asp-for="House.Ward" id="ward" class="form-control" required>
-                    <option value="">Select a ward</option>
-                </select>
-                <span asp-validation-for="House.Ward" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="House.Status" class="control-label"></label>
 
-                <select asp-for="House.Status" class="form-control">
+            <main class="content">
+                <div class="container-fluid">
+
+                    <h1 class="h3 mb-3">Edit</h1>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>  <a class="nav-link text-dark" asp-controller="Admin" asp-action="CommentsIndex">Back</a> </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                <input type="hidden" asp-for="House.HouseId" />
+                                                <div class="form-group">
+                                                    <label asp-for="House.ownerId" class="control-label"></label>
+                                                    <input asp-for="House.ownerId" class="form-control" />
+                                                    <span asp-validation-for="House.ownerId" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.title" class="control-label"></label>
+                                                    <input asp-for="House.title" class="form-control" />
+                                                    <span asp-validation-for="House.title" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.Address" class="control-label"></label>
+                                                    <input asp-for="House.Address" class="form-control" />
+                                                    <span asp-validation-for="House.Address" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.Description" class="control-label"></label>
+                                                    <input asp-for="House.Description" class="form-control" />
+                                                    <span asp-validation-for="House.Description" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.ContactPhone" class="control-label"></label>
+                                                    <input asp-for="House.ContactPhone" class="form-control" />
+                                                    <span asp-validation-for="House.ContactPhone" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.CloseTime" class="control-label"></label>
+                                                    <input type="time" asp-for="House.CloseTime" class="form-control" />
+                                                    <span asp-validation-for="House.CloseTime" class="text-danger"></span>
+                                                </div>
 
 
-                    <option value="pencding">pencding</option>
-                    <option value="rejected">rejected</option>
-                    <option value="approved">approved</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="House.CreatedAt" class="control-label"></label>
-                <input asp-for="House.CreatedAt" class="form-control" />
-                <span asp-validation-for="House.CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="House.UpdatedAt" class="control-label"></label>
-                <input asp-for="House.UpdatedAt" class="form-control" />
-                <span asp-validation-for="House.UpdatedAt" class="text-danger"></span>
-            </div>
 
-            <input type="hidden" asp-for="Facilities.Id" />
-            <div class="form-group">
-                <label asp-for="Facilities.HouseId" class="control-label"></label>
-                <input asp-for="Facilities.HouseId" class="form-control" />
-                <span asp-validation-for="Facilities.HouseId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facilities.InventoryEquipment" class="control-label"></label>
-                <input asp-for="Facilities.InventoryEquipment" class="form-control" />
-                <span asp-validation-for="Facilities.InventoryEquipment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facilities.UtilityCost" class="control-label"></label>
-                <input asp-for="Facilities.UtilityCost" class="form-control" />
-                <span asp-validation-for="Facilities.UtilityCost" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Facilities.AirConditioning" /> @Html.DisplayNameFor(model => model.Facilities.AirConditioning)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Facilities.MajorAppliances" /> @Html.DisplayNameFor(model => model.Facilities.MajorAppliances)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facilities.NumberOfBedroom" class="control-label"></label>
-                <input asp-for="Facilities.NumberOfBedroom" class="form-control" />
-                <span asp-validation-for="Facilities.NumberOfBedroom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facilities.ToiletAndBathroom" class="control-label"></label>
-                <input asp-for="Facilities.ToiletAndBathroom" class="form-control" />
-                <span asp-validation-for="Facilities.ToiletAndBathroom" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Facilities.Pet" /> @Html.DisplayNameFor(model => model.Facilities.Pet)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facilities.DepositRequired" class="control-label"></label>
-                <input asp-for="Facilities.DepositRequired" class="form-control" />
-                <span asp-validation-for="Facilities.DepositRequired" class="text-danger"></span>
-            </div>
-         
-            @if (@Model.House.Images != null && @Model.House.Images.Count > 0)
-            {
-                <div class="row">
-                    @foreach (var img in @Model.House.Images)
-                    {
-                        <div class="col-md-3 text-center">
-                            <img src="@img.ImageUrl" alt="House Image" style="width: 100%; height: auto;" />
-                            <div>
-                                <label>
-                                    <input type="checkbox" name="imagesToDelete" value="@img.ImageId" />
-                                    Delete
-                                </label>
+                                                <div class="form-group">
+                                                    <label asp-for="House.Province">Province:</label>
+                                                    <select asp-for="House.Province" id="province" class="form-control" required>
+                                                        <option value="">Select a province</option>
+                                                    </select>
+                                                    <span asp-validation-for="House.District" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.District">District:</label>
+                                                    <select asp-for="House.District" id="district" class="form-control" required>
+                                                        <option value="">Select a district</option>
+                                                    </select>
+                                                    <span asp-validation-for="House.District" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.Ward">Ward:</label>
+                                                    <select asp-for="House.Ward" id="ward" class="form-control" required>
+                                                        <option value="">Select a ward</option>
+                                                    </select>
+                                                    <span asp-validation-for="House.Ward" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label asp-for="House.Status" class="control-label"></label>
+
+                                                    <select asp-for="House.Status" class="form-control">
+
+
+                                                        <option value="pencding">pencding</option>
+                                                        <option value="rejected">rejected</option>
+                                                        <option value="approved">approved</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.CreatedAt" class="control-label"></label>
+                                                    <input asp-for="House.CreatedAt" class="form-control" />
+                                                    <span asp-validation-for="House.CreatedAt" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="House.UpdatedAt" class="control-label"></label>
+                                                    <input asp-for="House.UpdatedAt" class="form-control" />
+                                                    <span asp-validation-for="House.UpdatedAt" class="text-danger"></span>
+                                                </div>
+
+                                                <input type="hidden" asp-for="Facilities.Id" />
+                                                <div class="form-group">
+                                                    <label asp-for="Facilities.HouseId" class="control-label"></label>
+                                                    <input asp-for="Facilities.HouseId" class="form-control" />
+                                                    <span asp-validation-for="Facilities.HouseId" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="Facilities.InventoryEquipment" class="control-label"></label>
+                                                    <input asp-for="Facilities.InventoryEquipment" class="form-control" />
+                                                    <span asp-validation-for="Facilities.InventoryEquipment" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="Facilities.UtilityCost" class="control-label"></label>
+                                                    <input asp-for="Facilities.UtilityCost" class="form-control" />
+                                                    <span asp-validation-for="Facilities.UtilityCost" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" asp-for="Facilities.AirConditioning" /> @Html.DisplayNameFor(model => model.Facilities.AirConditioning)
+                                                    </label>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" asp-for="Facilities.MajorAppliances" /> @Html.DisplayNameFor(model => model.Facilities.MajorAppliances)
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="Facilities.NumberOfBedroom" class="control-label"></label>
+                                                    <input asp-for="Facilities.NumberOfBedroom" class="form-control" />
+                                                    <span asp-validation-for="Facilities.NumberOfBedroom" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="Facilities.ToiletAndBathroom" class="control-label"></label>
+                                                    <input asp-for="Facilities.ToiletAndBathroom" class="form-control" />
+                                                    <span asp-validation-for="Facilities.ToiletAndBathroom" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" asp-for="Facilities.Pet" /> @Html.DisplayNameFor(model => model.Facilities.Pet)
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="Facilities.DepositRequired" class="control-label"></label>
+                                                    <input asp-for="Facilities.DepositRequired" class="form-control" />
+                                                    <span asp-validation-for="Facilities.DepositRequired" class="text-danger"></span>
+                                                </div>
+
+                                                @if (@Model.House.Images != null && @Model.House.Images.Count > 0)
+                                                {
+                                                    <div class="row">
+                                                        @foreach (var img in @Model.House.Images)
+                                                        {
+                                                            <div class="col-md-3 text-center">
+                                                                <img src="@img.ImageUrl" alt="House Image" style="width: 100%; height: auto;" />
+                                                                <div>
+                                                                    <label>
+                                                                        <input type="checkbox" name="imagesToDelete" value="@img.ImageId" />
+                                                                        Delete
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <p>No images uploaded.</p>
+                                                }
+
+                                                <h3>Upload New Images</h3>
+                                                <input type="file" name="uploadedImages" multiple />
+
+                                                <button type="submit">Save Changes</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    }
+                    </div>
+
                 </div>
-            }
-            else
-            {
-                <p>No images uploaded.</p>
-            }
+            </main>
 
-            <h3>Upload New Images</h3>
-            <input type="file" name="uploadedImages" multiple />
 
-            <button type="submit">Save Changes</button>
-        </form>
-
-       
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-<script>
-    const provinceAPI = 'https://provinces.open-api.vn/api/p/';
-    const districtAPI = 'https://provinces.open-api.vn/api/d/';
-    const wardAPI = 'https://provinces.open-api.vn/api/w/';
+    <script src="/js/app.js"></script>
+    <script>
+        const provinceAPI = 'https://provinces.open-api.vn/api/p/';
+        const districtAPI = 'https://provinces.open-api.vn/api/d/';
+        const wardAPI = 'https://provinces.open-api.vn/api/w/';
 
-    const provinceSelect = document.getElementById('province');
-    const districtSelect = document.getElementById('district');
-    const wardSelect = document.getElementById('ward');
+        const provinceSelect = document.getElementById('province');
+        const districtSelect = document.getElementById('district');
+        const wardSelect = document.getElementById('ward');
 
-    // Values from the backend for pre-selection (ensure these are correct data types)
-    const savedProvince = "@Html.Raw(Model.House.Province)";
-    const savedDistrict = "@Html.Raw(Model.House.District)";
-    const savedWard = "@Html.Raw(Model.House.Ward)";
+        // Values from the backend for pre-selection (ensure these are correct data types)
+        const savedProvince = "@Html.Raw(Model.House.Province)";
+        const savedDistrict = "@Html.Raw(Model.House.District)";
+        const savedWard = "@Html.Raw(Model.House.Ward)";
 
-    console.log("Saved Province:", savedProvince);
-    console.log("Saved District:", savedDistrict);
-    console.log("Saved Ward:", savedWard);
+        console.log("Saved Province:", savedProvince);
+        console.log("Saved District:", savedDistrict);
+        console.log("Saved Ward:", savedWard);
 
-    // Helper function to populate dropdowns
-    const populateDropdown = (dropdown, items, valueField, textField, defaultText, selectedValue = null) => {
-        dropdown.innerHTML = `<option value="">${defaultText}</option>`;
-        items.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item[textField];  // Using text value instead of ID
-            option.textContent = item[textField];
-            if (selectedValue && selectedValue.toString() === item[textField].toString()) {
-                option.selected = true;
-            }
-            dropdown.appendChild(option);
-        });
-    };
-
-    // Fetch provinces
-    fetch(provinceAPI)
-        .then(response => response.json())
-        .then(data => {
-            populateDropdown(provinceSelect, data, 'code', 'name', 'Select a province', savedProvince);
-
-            // Trigger district fetch if a province is pre-selected
-            if (savedProvince) {
-                const selectedProvince = data.find(p => p.name === savedProvince);
-                if (selectedProvince) {
-                    fetchDistricts(selectedProvince.code);
+        // Helper function to populate dropdowns
+        const populateDropdown = (dropdown, items, valueField, textField, defaultText, selectedValue = null) => {
+            dropdown.innerHTML = `<option value="">${defaultText}</option>`;
+            items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item[textField];  // Using text value instead of ID
+                option.textContent = item[textField];
+                if (selectedValue && selectedValue.toString() === item[textField].toString()) {
+                    option.selected = true;
                 }
-            }
-        })
-        .catch(error => console.error('Error fetching provinces:', error));
+                dropdown.appendChild(option);
+            });
+        };
 
-    // Fetch districts based on selected province
-    const fetchDistricts = (provinceCode) => {
-        fetch(districtAPI)
+        // Fetch provinces
+        fetch(provinceAPI)
             .then(response => response.json())
             .then(data => {
-                const filteredDistricts = data.filter(d => d.province_code == provinceCode);
-                populateDropdown(districtSelect, filteredDistricts, 'code', 'name', 'Select a district', savedDistrict);
+                populateDropdown(provinceSelect, data, 'code', 'name', 'Select a province', savedProvince);
 
-                // Trigger ward fetch if a district is pre-selected
-                if (savedDistrict) {
-                    const selectedDistrict = filteredDistricts.find(d => d.name === savedDistrict);
-                    if (selectedDistrict) {
-                        fetchWards(selectedDistrict.code);
+                // Trigger district fetch if a province is pre-selected
+                if (savedProvince) {
+                    const selectedProvince = data.find(p => p.name === savedProvince);
+                    if (selectedProvince) {
+                        fetchDistricts(selectedProvince.code);
                     }
                 }
             })
-            .catch(error => console.error('Error fetching districts:', error));
-    };
+            .catch(error => console.error('Error fetching provinces:', error));
 
-    // Fetch wards based on selected district
-    const fetchWards = (districtCode) => {
-        fetch(wardAPI)
-            .then(response => response.json())
-            .then(data => {
-                const filteredWards = data.filter(w => w.district_code == districtCode);
-                populateDropdown(wardSelect, filteredWards, 'code', 'name', 'Select a ward', savedWard);
-            })
-            .catch(error => console.error('Error fetching wards:', error));
-    };
+        // Fetch districts based on selected province
+        const fetchDistricts = (provinceCode) => {
+            fetch(districtAPI)
+                .then(response => response.json())
+                .then(data => {
+                    const filteredDistricts = data.filter(d => d.province_code == provinceCode);
+                    populateDropdown(districtSelect, filteredDistricts, 'code', 'name', 'Select a district', savedDistrict);
 
-    // Event listeners for dropdown changes
-    provinceSelect.addEventListener('change', () => {
-        const provinceCode = provinceSelect.value;
-        districtSelect.innerHTML = '<option value="">Select a district</option>';
-        wardSelect.innerHTML = '<option value="">Select a ward</option>';
+                    // Trigger ward fetch if a district is pre-selected
+                    if (savedDistrict) {
+                        const selectedDistrict = filteredDistricts.find(d => d.name === savedDistrict);
+                        if (selectedDistrict) {
+                            fetchWards(selectedDistrict.code);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error fetching districts:', error));
+        };
 
-        if (provinceCode) {
-            fetchDistricts(provinceCode);
-        }
-    });
+        // Fetch wards based on selected district
+        const fetchWards = (districtCode) => {
+            fetch(wardAPI)
+                .then(response => response.json())
+                .then(data => {
+                    const filteredWards = data.filter(w => w.district_code == districtCode);
+                    populateDropdown(wardSelect, filteredWards, 'code', 'name', 'Select a ward', savedWard);
+                })
+                .catch(error => console.error('Error fetching wards:', error));
+        };
 
-    districtSelect.addEventListener('change', () => {
-        const districtCode = districtSelect.value;
-        wardSelect.innerHTML = '<option value="">Select a ward</option>';
+        // Event listeners for dropdown changes
+        provinceSelect.addEventListener('change', () => {
+            const provinceCode = provinceSelect.value;
+            districtSelect.innerHTML = '<option value="">Select a district</option>';
+            wardSelect.innerHTML = '<option value="">Select a ward</option>';
 
-        if (districtCode) {
-            fetchWards(districtCode);
-        }
-    });
-</script>
+            if (provinceCode) {
+                fetchDistricts(provinceCode);
+            }
+        });
+
+        districtSelect.addEventListener('change', () => {
+            const districtCode = districtSelect.value;
+            wardSelect.innerHTML = '<option value="">Select a ward</option>';
+
+            if (districtCode) {
+                fetchWards(districtCode);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
 
 
 
@@ -269,8 +328,15 @@
 
 
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
+
+
+
+
+
+
+
+
+
+
 }

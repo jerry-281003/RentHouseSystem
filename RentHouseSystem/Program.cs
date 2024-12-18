@@ -2,11 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RentHouseSystem.Data;
 using Microsoft.AspNetCore.Identity;
+using RentHouseSystem;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RentHouseSystemContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RentHouseSystemContext") ?? throw new InvalidOperationException("Connection string 'RentHouseSystemContext' not found.")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddDefaultTokenProviders().AddRoles<IdentityRole>().AddEntityFrameworkStores<RentHouseSystemContext>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

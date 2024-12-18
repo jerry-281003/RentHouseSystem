@@ -32,7 +32,7 @@ namespace RentHouseSystem.Data
         public DbSet<RentHouseSystem.Models.Facilities> Facilities { get; set; } = default!;
 
 
-        public DbSet<RentHouseSystem.Models.FacilitiesHouse> FacilitiesHouse { get; set; } = default!;
+       
 
         
     }

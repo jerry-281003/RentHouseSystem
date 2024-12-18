@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RentHouseSystem.Data;
+using RentHouseSystem.Migrations;
 using RentHouseSystem.Models;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace RentHouseSystem.Controllers
 {
@@ -41,30 +45,105 @@ namespace RentHouseSystem.Controllers
             }
             return View(house);
         }
-        public IActionResult Search(string keyword)
+        public async Task<IActionResult> Filter(List<string> id, bool ac, bool pets)
         {
-            var result = _context.House
-         .Include(h => h.Images) // Include related images
-         .Where(t => EF.Functions.Like(t.title, $"%{keyword}%") && t.Status== status.approved ||
-                     EF.Functions.Like(t.Description, $"%{keyword}%") && t.Status == status.approved)
-         .Select(h => new HouseSearchModel
-         {
-             HouseId = h.HouseId,
-             ownerId = h.ownerId,
-             title = h.title,
-             Address = h.Address,
-             Description = h.Description,
-             ContactPhone = h.ContactPhone,
-             Province = h.Province,
-             District = h.District,
-             Ward = h.Ward,
-             Status = h.Status,
-             CreatedAt = h.CreatedAt,
-             UpdatedAt = h.UpdatedAt,
-             ImageUrls = h.Images.FirstOrDefault().ImageUrl // Fetch the first image URL
-         })
-         .ToList();
-            return View(result);
+            // Ensure the houseSearchModel list is empty before starting the process
+            var houseSearchModel = new List<HouseSearchModel>();
+            
+
+            foreach (var item in id)
+            {
+                var facilities = await _context.Facilities
+                    .FirstOrDefaultAsync(f => f.HouseId == item);
+
+                if (facilities != null)
+                {
+                    // Check if the house meets the air conditioning and pets criteria
+                    if (ac == facilities.AirConditioning && pets == facilities.Pet)
+                    {
+                        var result = _context.House
+                       .Include(h => h.Images) // Include related images
+                           .Where(h => h.HouseId == item)
+                           .Select(h => new HouseSearchModel
+                           {
+                               HouseId = h.HouseId,
+                               ownerId = h.ownerId,
+                               title = h.title,
+                               Address = h.Address,
+                               Description = h.Description,
+                               ContactPhone = h.ContactPhone,
+                               Province = h.Province,
+                               District = h.District,
+                               Ward = h.Ward,
+                               Status = h.Status,
+                               CreatedAt = h.CreatedAt,
+                               UpdatedAt = h.UpdatedAt,
+                               ImageUrls = h.Images.FirstOrDefault().ImageUrl // Fetch the first image URL
+                           });
+                        houseSearchModel.AddRange(result);
+                    }
+                }
+            }
+
+            return View(houseSearchModel);
+        }
+
+        public IActionResult Search(string keyword, string district, string province)
+        {
+           
+            if (district == null || province == null)
+            {
+                var result = _context.House
+                            .Include(h => h.Images) // Include related images
+                            .Where(t => EF.Functions.Like(t.title, $"%{keyword}%") && t.Status == status.approved && t.Invisible !=true||
+                            EF.Functions.Like(t.Description, $"%{keyword}%") && t.Status == status.approved && t.Invisible != true)
+                            .Select(h => new HouseSearchModel
+                            {
+                                HouseId = h.HouseId,
+                                ownerId = h.ownerId,
+                                title = h.title,
+                                Address = h.Address,
+                                Description = h.Description,
+                                ContactPhone = h.ContactPhone,
+                                Province = h.Province,
+                                District = h.District,
+                                Ward = h.Ward,
+                                Status = h.Status,
+                                CreatedAt = h.CreatedAt,
+                                UpdatedAt = h.UpdatedAt,
+                                ImageUrls = h.Images.FirstOrDefault().ImageUrl // Fetch the first image URL
+                            })
+                            .ToList();
+                
+                return View(result);
+            }
+            else 
+            {
+                var result = _context.House
+                            .Include(h => h.Images) // Include related images
+                            .Where(t => EF.Functions.Like(t.title, $"%{keyword}%") && t.Status == status.approved && t.Province==province && t.District==district && t.Invisible != true ||
+                            EF.Functions.Like(t.Description, $"%{keyword}%") && t.Status == status.approved &&  t.Province == province && t.District == district && t.Invisible != true)
+                            .Select(h => new HouseSearchModel
+                            {
+                                HouseId = h.HouseId,
+                                ownerId = h.ownerId,
+                                title = h.title,
+                                Address = h.Address,
+                                Description = h.Description,
+                                ContactPhone = h.ContactPhone,
+                                Province = h.Province,
+                                District = h.District,
+                                Ward = h.Ward,
+                                Status = h.Status,
+                                CreatedAt = h.CreatedAt,
+                                UpdatedAt = h.UpdatedAt,
+                                ImageUrls = h.Images.FirstOrDefault().ImageUrl // Fetch the first image URL
+                            })
+                            .ToList();
+                return View(result);
+            }
+         
+            return View(null);
         }
         // GET: Houses
         public async Task<IActionResult> Index()
@@ -150,7 +229,7 @@ namespace RentHouseSystem.Controllers
            
             return View(house);
         }
-
+        [Authorize(Roles = "owner")]
         // GET: Houses1/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
@@ -179,85 +258,92 @@ namespace RentHouseSystem.Controllers
 			return View(FacilitiesHouseViewModel);
 		}
 
-
-		// POST: Houses1/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
+        [Authorize(Roles = "owner")]
+        // POST: Houses1/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(string id, [Bind("House,Facilities")] FacilitiesHouseViewModel facilitiesHouseViewModel, List<IFormFile> uploadedImages, List<string> imagesToDelete)
 		{
-			if (id != facilitiesHouseViewModel.House.HouseId)
+            if (id != facilitiesHouseViewModel.House.HouseId)
+            {
+                return NotFound();
+            }
+            else
+            {
+
+                facilitiesHouseViewModel.House.UpdatedAt = DateTime.Now;
+
+                if (imagesToDelete != null && imagesToDelete.Count > 0)
+                {
+                    foreach (var image in imagesToDelete)
+                    {
+                        var imageToRemove = await _context.Image.FindAsync(int.Parse(image));
+                        if (imageToRemove != null)
+                        {
+                            // Optionally delete the physical file from storage
+                            var imagePath = Path.Combine("wwwroot", imageToRemove.ImageUrl.TrimStart('/'));
+                            if (System.IO.File.Exists(imagePath))
+                            {
+                                System.IO.File.Delete(imagePath);
+                            }
+
+                            _context.Image.Remove(imageToRemove);
+                        }
+                    }
+                }
+                // Handle Images
+                if (uploadedImages != null)
+                {
+                    foreach (var imageFile in uploadedImages)
+                    {
+                        if (imageFile.Length > 0)
+                        {
+                            var image = new Image
+                            {
+                                ImageUrl = await UploadImageToStorage(imageFile) // Replace with a method to save image
+                            };
+                            facilitiesHouseViewModel.House.Images.Add(image);
+                        }
+                    }
+                }
+
+                _context.Update(facilitiesHouseViewModel.House);
+                _context.Update(facilitiesHouseViewModel.Facilities);
+
+                await _context.SaveChangesAsync();
+
+
+                return RedirectToAction("HouseIndex", "Admin");
+            }
+			return View(facilitiesHouseViewModel);
+		}
+        [Authorize(Roles = "owner")]
+        public async Task<IActionResult> Delete(string? id)
+		{
+			if (id == null || _context.House == null)
 			{
 				return NotFound();
 			}
 
+			var house = await _context.House
+				.FirstOrDefaultAsync(m => m.HouseId == id);
+			if (house == null)
+			{
+				return NotFound();
+			}
+			if (house != null)
+			{
+				house.Invisible = true;
+			}
+
+			await _context.SaveChangesAsync();
+			return RedirectToAction("HouseIndex", "Admin");
 			
-                    facilitiesHouseViewModel.House.UpdatedAt = DateTime.Now;
-
-                    if (imagesToDelete != null && imagesToDelete.Count > 0)
-                    {
-                        foreach (var image in imagesToDelete)
-                        {
-                            var imageToRemove = await _context.Image.FindAsync(int.Parse(image));
-                            if (imageToRemove != null)
-                            {
-                                // Optionally delete the physical file from storage
-                                var imagePath = Path.Combine("wwwroot", imageToRemove.ImageUrl.TrimStart('/'));
-                                if (System.IO.File.Exists(imagePath))
-                                {
-                                    System.IO.File.Delete(imagePath);
-                                }
-
-                                _context.Image.Remove(imageToRemove);
-                            }
-                        }
-                    }
-                    // Handle Images
-                    if (uploadedImages != null)
-					{
-						foreach (var imageFile in uploadedImages)
-						{
-							if (imageFile.Length > 0)
-							{
-								var image = new Image
-								{
-									ImageUrl = await UploadImageToStorage(imageFile) // Replace with a method to save image
-								};
-                                facilitiesHouseViewModel.House.Images.Add(image);
-							}
-						}
-					}
-                    
-                    _context.Update(facilitiesHouseViewModel.House);
-                    _context.Update(facilitiesHouseViewModel.Facilities);
-                    
-					await _context.SaveChangesAsync();
-				
-
-				return RedirectToAction(nameof(Index));
-			
-			return View(facilitiesHouseViewModel);
 		}
-
 		// POST: Houses1/Delete/5
-		[HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (_context.House == null)
-            {
-                return Problem("Entity set 'RentHouseSystemContext.House'  is null.");
-            }
-            var house = await _context.House.FindAsync(id);
-            if (house != null)
-            {
-                _context.House.Remove(house);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+		
 
         public bool HouseExists(string id)
         {
