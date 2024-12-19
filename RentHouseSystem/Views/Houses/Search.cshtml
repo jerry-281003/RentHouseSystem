@@ -43,19 +43,20 @@
                             }
                             <div class="mb-4">
                             <label class="form-label">Facilities</label>
+                                <!-- Pets Allowed Checkbox -->
                                 <div class="form-check">
-                                    <input class="form-check-input" name="pets" type="checkbox" id="pets" value="true">
+                                    <input type="hidden" id="petsHidden" name="pets" value="false">
+                                    <input class="form-check-input" name="pets" type="checkbox" id="pets" value="true"
+                                           onchange="toggleHiddenInput(this, 'petsHidden')">
                                     <label class="form-check-label" for="pets">Pets Allowed</label>
-                                    <!-- Hidden field for 'false' if checkbox is unchecked -->
-                                    <input type="hidden" name="pets" value="false" />
                                 </div>
 
                                 <!-- Air Conditioning Checkbox -->
                                 <div class="form-check">
-                                    <input class="form-check-input" name="ac" type="checkbox" id="ac" value="true">
+                                    <input type="hidden" id="acHidden" name="ac" value="false">
+                                    <input class="form-check-input" name="ac" type="checkbox" id="ac" value="true"
+                                           onchange="toggleHiddenInput(this, 'acHidden')">
                                     <label class="form-check-label" for="ac">Air Conditioning</label>
-                                    <!-- Hidden field for 'false' if checkbox is unchecked -->
-                                    <input type="hidden" name="ac" value="false" />
                                 </div>
                               
                             <button type="submit">Filter</button>
@@ -100,6 +101,16 @@
                     }
         
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-                
+
+                <script>
+                    function toggleHiddenInput(checkbox, hiddenInputId) {
+                        const hiddenInput = document.getElementById(hiddenInputId);
+                        if (checkbox.checked) {
+                            hiddenInput.disabled = true; // Disable hidden input when checkbox is checked
+                        } else {
+                            hiddenInput.disabled = false; // Enable hidden input when checkbox is unchecked
+                        }
+                    }
+                </script>
 </body>
 </html>

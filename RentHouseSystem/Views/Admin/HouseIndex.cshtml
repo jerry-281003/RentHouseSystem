@@ -69,6 +69,9 @@
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.title)
                                                 </th>
+												<th>
+													@Html.DisplayNameFor(model => model.Status)
+												</th>
                                                
                                                 <th></th>
                                             </tr>
@@ -80,7 +83,16 @@
                                                    
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.title)
-                                                    </td>                                                   
+                                                    </td>
+													<td>
+														<button class="btn btn-sm
+        @(item.Status == status.approved ? "btn-success" :
+          item.Status == status.rejected ? "btn-danger" :
+          item.Status == status.pencding ? "btn-primary" : "btn-secondary")">
+															@Html.DisplayFor(modelItem => item.Status)
+														</button>
+													</td>
+													
                                                     <td>
 														<form id="form-submit" asp-controller="Admin" asp-action="DetailHouse" method="get">
 															<input type="hidden" name="id" value="@item.HouseId" />

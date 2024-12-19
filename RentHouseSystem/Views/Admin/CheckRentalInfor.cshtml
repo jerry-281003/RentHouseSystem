@@ -69,9 +69,7 @@
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.ownerId)
                                                 </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.title)
-                                                </th>
+                                                
                                                 
                                                 <th></th>
                                             </tr>
@@ -83,15 +81,21 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.ownerId)
                                                     </td>
-                                                    <td>
-														<a asp-controller="Houses" asp-action="DetailHouse" asp-route-id="@item.HouseId"> @item.title</a>
+                                                    
+													<td>
+														<a asp-action="DetailHouse" asp-route-id="@item.HouseId"> Preview  </a>
+
 													</td>
-                                                   
-                                                    <td>
-														<a asp-action="Approved" asp-route-id="@item.HouseId"> approved  </a> |
-														<a asp-action="Rejected" asp-route-id="@item.HouseId"> rejected</a> |
-                                                       
-                                                    </td>
+													<td>
+														<form asp-action="Approved" asp-route-id="@item.HouseId" method="post" style="display:inline;">
+															<button type="submit" class="btn btn-success btn-sm">Approved</button>
+														</form>
+													</td>
+													<td>
+														<form asp-action="Rejected" asp-route-id="@item.HouseId" method="post" style="display:inline;">
+															<button type="submit" class="btn btn-danger btn-sm">Rejected</button>
+														</form>
+													</td>
                                                 </tr>
                                             }
                                         </tbody>

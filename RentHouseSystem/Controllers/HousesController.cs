@@ -58,31 +58,42 @@ namespace RentHouseSystem.Controllers
 
                 if (facilities != null)
                 {
-                    // Check if the house meets the air conditioning and pets criteria
-                    if (ac == facilities.AirConditioning && pets == facilities.Pet)
+                    var query = _context.House.Include(h => h.Images).Where(h => h.HouseId == item);
+
+                    if (ac != true && pets != true)
                     {
-                        var result = _context.House
-                       .Include(h => h.Images) // Include related images
-                           .Where(h => h.HouseId == item)
-                           .Select(h => new HouseSearchModel
-                           {
-                               HouseId = h.HouseId,
-                               ownerId = h.ownerId,
-                               title = h.title,
-                               Address = h.Address,
-                               Description = h.Description,
-                               ContactPhone = h.ContactPhone,
-                               Province = h.Province,
-                               District = h.District,
-                               Ward = h.Ward,
-                               Status = h.Status,
-                               CreatedAt = h.CreatedAt,
-                               UpdatedAt = h.UpdatedAt,
-                               ImageUrls = h.Images.FirstOrDefault().ImageUrl // Fetch the first image URL
-                           });
-                        houseSearchModel.AddRange(result);
+                        query = query.Where(h => ac == facilities.AirConditioning && pets == facilities.Pet);
                     }
+                    else if (ac != true && pets==false)
+                    {
+                        query = query.Where(h => ac == facilities.AirConditioning);
+                    }
+                    else if (pets != null && ac==false)
+                    {
+                        query = query.Where(h => pets == facilities.Pet);
+                    }
+
+                    var result = query.Select(h => new HouseSearchModel
+                    {
+                        HouseId = h.HouseId,
+                        ownerId = h.ownerId,
+                        title = h.title,
+                        Address = h.Address,
+                        Description = h.Description,
+                        ContactPhone = h.ContactPhone,
+                        Province = h.Province,
+                        District = h.District,
+                        Ward = h.Ward,
+                        Status = h.Status,
+                        CreatedAt = h.CreatedAt,
+                        UpdatedAt = h.UpdatedAt,
+                        ImageUrls = h.Images.FirstOrDefault().ImageUrl // Fetch the first image URL
+                    });
+
+                    houseSearchModel.AddRange(result);
                 }
+
+            
             }
 
             return View(houseSearchModel);

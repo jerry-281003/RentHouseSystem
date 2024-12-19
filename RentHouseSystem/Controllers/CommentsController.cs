@@ -11,7 +11,7 @@ using RentHouseSystem.Data;
 using RentHouseSystem.Models;
 
 
-namespace RentHouseSystem.Controllers
+namespace RentHouseSystem
 {
     public class CommentsController : Controller
     {
@@ -95,7 +95,7 @@ namespace RentHouseSystem.Controllers
             // Add to the database and save changes
             _context.Add(comment);
             _context.SaveChanges();
-            return RedirectToAction("DetailHouse", "Houses", new { id = HouseId });
+            return RedirectToAction("DetailHouse", "Admin", new { id = HouseId });
         }
         // GET: Comments
         public async Task<IActionResult> Index()
