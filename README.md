@@ -57,7 +57,18 @@
         </section>
        <section>
           <h1>Demo</h1>
-         <a href="http://Rentalhouse.somee.com">Visit Example</a>
+           <h3> Home page</h3>
+             <img src="https://firebasestorage.googleapis.com/v0/b/booking-room-app-f6938.appspot.com/o/Screenshot%202025-01-30%20004446-compressed.jpg?alt=media&token=390bce6f-9172-4580-bfd5-4b0c33c2d64a" alt="Home" >
+           <h3> Search page</h3>
+           <img src="https://firebasestorage.googleapis.com/v0/b/booking-room-app-f6938.appspot.com/o/Screenshot%202025-01-30%20004532.png?alt=media&token=316bee91-94c8-4b37-b4dc-fd49205f3e0f" alt="Search" >
+           <h3> Detail House</h3>
+           <img src="https://firebasestorage.googleapis.com/v0/b/booking-room-app-f6938.appspot.com/o/Screenshot%202025-01-30%20004629.png?alt=media&token=b1b6c054-6a33-438f-bfb5-c9794455b65e" alt="Detail" >
+           <h3> Owner page</h3>
+           <img src="https://firebasestorage.googleapis.com/v0/b/booking-room-app-f6938.appspot.com/o/Screenshot%202025-01-30%20004358.png?alt=media&token=401baf88-c3e2-45d6-9458-fc7bcbf7a14c" alt="Owner" >
+           <h3> Admin page</h3>
+            <img src="https://firebasestorage.googleapis.com/v0/b/booking-room-app-f6938.appspot.com/o/Screenshot%202025-01-30%20011825.png?alt=media&token=6123f96a-b348-4819-ba26-c99dba55f1f0" alt="Admin" >
+         Link website demo: <a href="http://Rentalhouse.somee.com">Visit Example</a>
+         Link video demo: <a href="https://youtu.be/nswU8O4lNmY">video demo</a>
          </section>
     </main>
     <footer>
